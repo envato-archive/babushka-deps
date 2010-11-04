@@ -1,0 +1,55 @@
+#! /bin/sh
+# <%= generated_by_babushka %>
+
+# Taken from Unicorn source version 1.1.2
+
+set -e
+# Example init script, this can be used with nginx, too,
+# since nginx and unicorn accept the same signals
+
+# Feel free to change any of the following variables for your app:
+TIMEOUT=60
+APP_ROOT=<%= var :absolute_rails_root %>
+PID=<%= var :app_pid_dir %>/unicorn.pid
+CMD="<%= var :bin_path %>/unicorn_rails -D -E <%= var :rails_env %> -c <%= var :unicorn_config_within_app %>"
+action="$1"
+set -u
+
+old_pid="$PID.oldbin"
+
+cd $APP_ROOT || exit 1
+
+sig () {
+	test -s "$PID" && kill -$1 `cat $PID`
+}
+
+oldsig () {
+	test -s $old_pid && kill -$1 `cat $old_pid`
+}
+
+case $action in
+start)
+	sig 0 && echo >&2 "Already running" && exit 0
+	$CMD
+	;;
+stop)
+	sig QUIT && exit 0
+	echo >&2 "Not running"
+	;;
+force-stop)
+	sig TERM && exit 0
+	echo >&2 "Not running"
+	;;
+restart)
+  mv $PID $old_pid && echo old pid moved && $CMD && echo started ok && exit 0
+  echo >&2 "!!!! Something went wrong, trying to start anyway"
+  $CMD
+	;;
+reopen-logs)
+	sig USR1
+	;;
+*)
+	echo >&2 "Usage: $0 <start|stop|restart|upgrade|force-stop|reopen-logs>"
+	exit 1
+	;;
+esac
