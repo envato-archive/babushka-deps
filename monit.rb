@@ -1,6 +1,6 @@
 # Installs and configures monit. Like a boss.
 
-dep 'monit running' do
+dep 'monit running' do #DONE
   requires 'monit'
   requires_when_unmet 'monit startable'
   met? { (status = sudo("monit status")) && status[/uptime/] }
