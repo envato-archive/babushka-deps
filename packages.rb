@@ -35,3 +35,18 @@ end
 dep 'rake.gem' do
   installs 'rake' => '0.8.7'
 end
+
+dep 'nokogiri.gem' do
+  requires 'libxslt-dev.managed', 'libxml.managed'
+  provides []
+end
+
+dep 'libxslt-dev.managed' do
+  installs { via :apt, 'libxslt1-dev' }
+  provides []
+end
+
+dep 'libxml.managed' do
+  installs { via :apt, 'libxml2-dev' }
+  provides []
+end

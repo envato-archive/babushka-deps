@@ -19,3 +19,8 @@ dep 'mysql.managed' do
   installs { via :apt, %w[mysql-server libmysqlclient16-dev] }
   provides 'mysql'
 end
+
+dep 'mysql.gem' do
+  requires 'mysql.managed'
+  provides []
+end
