@@ -1,0 +1,12 @@
+# <%= generated_by_babushka %>
+---
+<%= var(:rails_env) %>:
+  address: <%= var(:util_host) %>
+  searchd_log_file: <%= var(:app_log_dir) %>/sphinx.searchd.log
+  query_log_file: <%= var(:app_log_dir) %>/sphinx.query.log
+  pid_file: <%= var(:app_pid_dir) %>/sphinx.pid
+  port: <%= var(:sphinx_port) %>
+  mem_limit: <%= var(:sphinx_mem_limit) %>
+  config_file: <%= var(:ts_generated_config) %>
+  sql_host: <%= var(:db_host) %>
+  searchd_file_path: <%= var(:sphinx_dir) %>/indexes
