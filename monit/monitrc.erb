@@ -1,0 +1,9 @@
+# <%= generated_by_babushka %>
+
+set daemon <%= var(:monit_frequency) %>
+set logfile syslog facility log_daemon
+
+set httpd port <%= var(:monit_port) %>
+    allow localhost
+
+include <%= var(:monit_included_dir) %>

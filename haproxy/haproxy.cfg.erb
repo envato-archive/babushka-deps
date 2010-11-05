@@ -1,0 +1,27 @@
+# <%= generated_by_babushka %>
+
+global
+  maxconn <%= var(:max_connections) %>
+  user haproxy
+  group haproxy
+  daemon
+
+defaults
+  balance roundrobin
+  mode http
+  retries 3
+  option redispatch
+  contimeout <%= var(:timeout) %>
+  clitimeout <%= var(:timeout) %>
+  srvtimeout <%= var(:timeout) %>
+
+listen <%= var(:app_name) %> localhost:<%= var(:app_listen_port) %>
+<% (1..var(:number_of_upstream_mongrels).to_i).each do |mongrel_index| %>
+  <% port_number = var(:mongrel_port_range).gsub('x', mongrel_index.to_s) %>
+  server <%= "#{var(:app_name)}_#{port_number}" %> localhost:<%= port_number %> weight 1 maxconn 1 minconn 1 check inter 5000
+<% end %>
+
+listen <%= "#{var(:app_name)}_#{var(:stats_listen_port)}" %> 0.0.0.0:<%= var(:stats_listen_port) %>
+  mode http
+  stats uri /
+

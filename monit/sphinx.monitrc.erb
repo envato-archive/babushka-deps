@@ -1,0 +1,7 @@
+# <%= generated_by_babushka %>
+
+check process sphinx_<%= var(:app_name) %>
+  with pidfile <%= var(:app_pid_dir) %>/sphinx.pid
+  start program = "/bin/su <%= var(:username) %> -c '/usr/local/bin/searchd --config <%= var(:ts_generated_config) %>'"
+  stop program = "/bin/su <%= var(:username) %> -c '/usr/local/bin/searchd --stop --config <%= var(:ts_generated_config) %>'"
+  group util_<%= var(:app_name) %>

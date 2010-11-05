@@ -1,0 +1,7 @@
+# <%= generated_by_babushka %>
+
+<% (0...var(:num_unicorn_workers).to_i).each do |worker_num| %>
+check process unicorn_<%= var(:app_name) %>_<%= worker_num %>
+  with pidfile <%= var :app_pid_dir %>/unicorn_<%= worker_num %>.pid
+  group unicorn_<%= var(:app_name) %>
+<% end %>
