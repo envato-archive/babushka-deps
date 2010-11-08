@@ -5,6 +5,7 @@ dep 'user set up from root' do
 end
 
 dep 'authorized key present for user' do #DONE
+  define_var :username, :default => shell("whoami")
   helper(:ssh_dir) { "#{var(:home_dir_base) / var(:username)}/.ssh" }
   met? { sudo "grep '#{var(:your_ssh_public_key)}' '#{ssh_dir}/authorized_keys'" }
   before { sudo "mkdir -p '#{ssh_dir}'; chmod 700 '#{ssh_dir}'" }
