@@ -26,7 +26,7 @@ end
 
 dep 'sphinx yml in place' do #DONE
   requires 'sphinx yml generated' #DONE
-  define_var :sphinx_config_within_app, :default => var(:rails_root) / 'config/sphinx.yml'
+  define_var :sphinx_config_within_app, :default => L{ var(:rails_root) / 'config/sphinx.yml' }
   define_var :sphinx_config, :default => L{ var(:sphinx_config_within_app) },
              :message => "Where to render the config (only change this if you'd like to render it elsewhere then symlink it into the app)"
   met? { var(:sphinx_config_within_app).exists? }

@@ -16,7 +16,7 @@ end
 
 dep 'unicorn config in place' do #DONE
   requires 'unicorn config generated' #DONE
-  define_var :unicorn_config_within_app, :default => var(:rails_root) / 'config/unicorn.rb'
+  define_var :unicorn_config_within_app, :default => L{ var(:rails_root) / 'config/unicorn.rb' }
   define_var :unicorn_config, :default => L{ var(:unicorn_config_within_app) },
              :message => "Where to render the config (only change this if you'd like to render it elsewhere then symlink it into the app)"
   setup {
