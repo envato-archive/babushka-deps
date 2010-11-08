@@ -8,9 +8,7 @@ dep 'unicorn configured' do
 end
 
 dep 'unicorn.gem' do #DONE
-  # can be useful to have this defined at a higher level
-  define_var :unicorn_version, :default => '1.1.3'
-  installs 'unicorn' => L{ var(:unicorn_version) }
+  installs 'unicorn' => "1.1.3"
   provides "unicorn", "unicorn_rails"
 end
 
