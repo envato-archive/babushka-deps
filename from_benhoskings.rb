@@ -43,7 +43,7 @@ dep 'www user and group' do #DONE
 end
 
 dep 'webserver startup script' do
-  requires 'webserver installed.src', #DONE
+  requires 'nginx installed.src', #DONE
            'rcconf.managed' #DONE
   met? { shell("rcconf --list").val_for('nginx') == 'on' }
   meet {
