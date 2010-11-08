@@ -50,3 +50,7 @@ dep 'libxml.managed' do
   installs { via :apt, 'libxml2-dev' }
   provides []
 end
+
+dep 'bash-completion.managed' do
+  provides []
+end

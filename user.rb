@@ -12,6 +12,23 @@ dep 'authorized key present for user' do #DONE
   after { sudo "chown -R #{var(:username)}:#{var(:username)} '#{ssh_dir}'; chmod 600 '#{ssh_dir}/authorized_keys'" }
 end
 
+dep 'user setup' do
+  requires 'dot files',
+           'passwordless ssh logins'
+           'bash-completion.managed' #DONE
+  setup {
+    set :github_user, 'envato'
+    set :dot_files_repo, 'dot-files'
+  }
+end
+
+dep 'dot files' do #DONE
+  requires 'git',
+           'curl.managed'
+  met? { "~/.dot-files/.git".p.exists? }
+  meet { shell %Q{curl -L "http://github.com/#{var :github_user}/#{var :dot_files_repo, :default => 'dot-files'}/raw/master/clone_and_link.sh" | bash} }
+end
+
 dep 'user exists with password' do #DONE
   requires 'user exists' #DONE
   on :linux do
