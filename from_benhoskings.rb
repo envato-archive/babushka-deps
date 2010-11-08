@@ -125,16 +125,16 @@ dep 'secured ssh logins' do
     end
   }
   meet {
-    change_with_sed 'PasswordAuthentication',          'yes', 'no', ssh_conf_path(:sshd)
-    change_with_sed 'ChallengeResponseAuthentication', 'yes', 'no', ssh_conf_path(:sshd)
+    change_with_sed 'PasswordAuthentication',          'yes', 'no', '/etc/ssh/sshd_config'
+    change_with_sed 'ChallengeResponseAuthentication', 'yes', 'no', '/etc/ssh/sshd_config'
   }
   after { sudo "/etc/init.d/ssh restart" }
 end
 
 dep 'lax host key checking' do #DONE
   requires 'sed.managed' #DONE
-  met? { grep /^StrictHostKeyChecking[ \t]+no/, ssh_conf_path(:ssh) }
-  meet { change_with_sed 'StrictHostKeyChecking', 'yes', 'no', ssh_conf_path(:ssh) }
+  met? { grep /^StrictHostKeyChecking[ \t]+no/, '/etc/ssh/ssh_config' }
+  meet { change_with_sed 'StrictHostKeyChecking', 'yes', 'no', '/etc/ssh/ssh_config' }
 end
 
 dep 'tmp cleaning grace period', :for => :ubuntu do
