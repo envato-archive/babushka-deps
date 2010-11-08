@@ -69,6 +69,75 @@ dep 'zlib headers.managed' do
   provides []
 end
 
-dep 'rcconf.managed' do
-  installs { via :apt, 'rcconf' }
+dep('rcconf.managed') { installs { via :apt, 'rcconf' } }
+
+dep('sshd.managed') { installs { via :apt, 'openssh-server' } }
+
+dep 'sed.managed' do
+  after {
+    in_dir '/opt/local/bin' do
+      sudo "ln -s gsed sed"
+    end
+  }
+end
+
+dep 'vim.managed'
+dep 'htop.managed'
+dep 'jnettop.managed'
+dep 'screen.managed'
+dep 'nmap.managed'
+dep 'tree.managed'
+
+# system
+
+dep 'system' do
+  requires 'secured ssh logins', #DONE
+           'lax host key checking', #DONE
+           'admins can sudo', #DONE
+           'tmp cleaning grace period', #DONE
+           'core software' #DONE
+end
+
+dep 'core software' do
+  requires 'vim.managed', #DONE
+           'curl.managed', #DONE
+           'htop.managed', #DONE
+           'jnettop.managed', #DONE
+           'screen.managed', #DONE
+           'nmap.managed', #DONE
+           'tree.managed' #DONE
+end
+
+dep 'secured ssh logins' do
+  requires 'sshd.managed', #DONE
+           'sed.managed' #DONE
+  met? {
+    # -o NumberOfPasswordPrompts=0
+    output = failable_shell('ssh -o StrictHostKeyChecking=no -o PasswordAuthentication=no nonexistentuser@localhost').stderr
+    if output.downcase['connection refused']
+      log_ok "sshd doesn't seem to be running."
+    elsif (auth_methods = output.scan(/Permission denied \((.*)\)\./).join.split(/[^a-z]+/)).empty?
+      log_error "sshd returned unexpected output."
+    else
+      returning auth_methods == %w[publickey] do |result|
+        log_verbose "sshd #{'only ' if result}accepts #{auth_methods.to_list} logins.", :as => (result ? :ok : :error)
+      end
+    end
+  }
+  meet {
+    change_with_sed 'PasswordAuthentication',          'yes', 'no', ssh_conf_path(:sshd)
+    change_with_sed 'ChallengeResponseAuthentication', 'yes', 'no', ssh_conf_path(:sshd)
+  }
+  after { sudo "/etc/init.d/ssh restart" }
+end
+
+dep 'lax host key checking' do #DONE
+  requires 'sed.managed' #DONE
+  met? { grep /^StrictHostKeyChecking[ \t]+no/, ssh_conf_path(:ssh) }
+  meet { change_with_sed 'StrictHostKeyChecking', 'yes', 'no', ssh_conf_path(:ssh) }
+end
+
+dep 'tmp cleaning grace period', :for => :ubuntu do
+  met? { !grep(/^[^#]*TMPTIME=0/, "/etc/default/rcS") }
+  meet { change_line "TMPTIME=0", "TMPTIME=30", "/etc/default/rcS" }
 end
