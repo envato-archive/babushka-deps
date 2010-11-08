@@ -1,7 +1,7 @@
 dep 'webserver capable of starting' do
   requires 'nginx installed.src', #DONE
            'www user and group', #DONE
-           'webserver startup script.nginx' #DONE
+           'webserver startup script' #DONE
   define_var :nginx_prefix, :default => '/opt/nginx'
 end
 
