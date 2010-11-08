@@ -13,8 +13,8 @@ dep 'authorized key present for user' do #DONE
 end
 
 dep 'user setup' do
-  requires 'dot files',
-           'passwordless ssh logins'
+  requires 'dot files', #DONE
+           'authorized key present for user' #DONE
            'bash-completion.managed' #DONE
   setup {
     set :github_user, 'envato'
