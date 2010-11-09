@@ -11,6 +11,7 @@ set -e
 TIMEOUT=60
 APP_ROOT=<%= var :absolute_rails_root %>
 PID=<%= var :app_pid_dir %>/unicorn.pid
+ENV_OPTS="RUBY_HEAP_MIN_SLOTS=1250000 RUBY_HEAP_SLOTS_INCREMENT=250000 RUBY_HEAP_SLOTS_GROWTH_FACTOR=1 RUBY_GC_MALLOC_LIMIT=60000000 RUBY_HEAP_FREE_MIN=100000"
 CMD="<%= var :bin_path %>/unicorn_rails -D -E <%= var :rails_env %> -c <%= var :unicorn_config_within_app %>"
 action="$1"
 set -u
@@ -30,6 +31,7 @@ oldsig () {
 case $action in
 start)
 	sig 0 && echo >&2 "Already running" && exit 0
+	export $ENV_OPTS
 	$CMD
 	;;
 stop)
@@ -41,7 +43,7 @@ force-stop)
 	echo >&2 "Not running"
 	;;
 restart)
-  mv $PID $old_pid && echo old pid moved && $CMD && echo started ok && exit 0
+  mv $PID $old_pid && echo old pid moved && export $ENV_OPTS && $CMD && echo started ok && exit 0
   echo >&2 "!!!! Something went wrong, trying to start anyway"
   $CMD
 	;;
