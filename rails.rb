@@ -20,7 +20,7 @@ end
 dep 'rails app db yaml present' do #DONE
   helper(:db_yaml) { var(:rails_root) / "config" / "database.yml" }
   met? { db_yaml.exists? }
-  meet { shell "cp #{var(:rails_root) / "config" / "database.*#{var(:rails_env)}*"} #{db_yaml}" }
+  meet { shell "ln -s #{var(:rails_root) / "config" / "database.*#{var(:rails_env)}*"} #{db_yaml}" }
 end
 
 # If you don't install gems within your app, you need to ensure to can write to ~/.gem
