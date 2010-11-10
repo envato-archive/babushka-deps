@@ -24,7 +24,7 @@ end
 dep 'zip.managed'
 
 dep 'rack.gem' do
-  installs 'rack' => '1.0.1'
+  installs 'rack' => '1.1.0'
   provides 'rackup'
 end
 
