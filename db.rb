@@ -20,7 +20,7 @@ dep 'mysql.managed' do
   provides 'mysql'
 end
 
-dep 'mysql.gem' do
+dep 'mysql2.gem' do
   requires 'mysql.managed'
   provides []
 end
