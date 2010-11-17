@@ -1,5 +1,5 @@
 dep 'bundler.gem' do
-  installs 'bundler' => '1.0.0.rc.5'
+  installs 'bundler' => '1.0.6'
   provides 'bundle'
 end
 
