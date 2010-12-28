@@ -45,7 +45,7 @@ dep 'user exists' do #DONE
   meet {
     sudo "mkdir -p #{var :home_dir_base}" and
       sudo "groupadd -g #{var :fixed_uid_and_gid} #{var :username}" and
-      sudo "useradd -m -s /bin/bash -b #{var :home_dir_base} -g #{var :username} -G admin -u #{var :fixed_uid_and_gid} marketplace" and
+      sudo "useradd -m -s /bin/bash -b #{var :home_dir_base} -g #{var :username} -G admin -u #{var :fixed_uid_and_gid} #{var :username}" and
       sudo "chmod 701 #{var(:home_dir_base) / var(:username)}"
   }
 end
