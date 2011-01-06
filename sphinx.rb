@@ -11,7 +11,7 @@ dep 'sphinx configured' do
 end
 
 dep 'sphinx.src' do #DONE
-  source "http://www.sphinxsearch.com/downloads/sphinx-0.9.8.tar.gz"
+  source "http://www.sphinxsearch.com/files/sphinx-0.9.8.tar.gz"
   provides 'search', 'searchd', 'indexer'
 end
 
