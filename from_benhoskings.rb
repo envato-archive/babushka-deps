@@ -142,15 +142,6 @@ dep 'tmp cleaning grace period', :for => :ubuntu do
   meet { change_line "TMPTIME=0", "TMPTIME=30", "/etc/default/rcS" }
 end
 
-# user
-
-dep 'dot files' do #DONE
-  requires 'git',
-           'curl.managed'
-  met? { "~/.dot-files/.git".p.exists? }
-  meet { shell %Q{curl -L "http://github.com/#{var :github_user}/#{var :dot_files_repo, :default => 'dot-files'}/raw/master/clone_and_link.sh" | bash} }
-end
-
 dep 'public key' do
   met? { grep /^ssh-dss/, '~/.ssh/id_dsa.pub' }
   meet { shell("ssh-keygen -t dsa -f ~/.ssh/id_dsa -N ''").tap_log }
