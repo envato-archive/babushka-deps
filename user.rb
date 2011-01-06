@@ -13,17 +13,15 @@ dep 'authorized key present for user' do #DONE
   after { sudo "chown -R #{var(:username)}:#{var(:username)} '#{ssh_dir}'; chmod 600 '#{ssh_dir}/authorized_keys'" }
 end
 
-dep 'user setup' do
-  requires 'dot files', #DONE
-           'authorized key present for user' #DONE
-           'bash-completion.managed' #DONE
-  setup {
-    set :github_user, 'envato'
-    set :dot_files_repo, 'dot-files'
-  }
-end
+# dep 'user setup' do
+#   requires 'dot files', #DONE
+#            'authorized key present for user' #DONE
+#            'bash-completion.managed' #DONE
+# end
 
 dep 'dot files' do #DONE
+  define_var :github_user, :default => "envato"
+  define_var :dot_files_repo, :default => "dot-files"
   requires 'git',
            'curl.managed'
   met? { "~/.dot-files/.git".p.exists? }
