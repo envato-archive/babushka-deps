@@ -6,7 +6,7 @@ dep 'imagemagick.src' do
       provides []
     end
   end)
-  source "http://downloads.sourceforge.net/project/imagemagick/ImageMagick/6.4/ImageMagick-6.4.9-10.tar.gz"
+  source "http://downloads.sourceforge.net/project/imagemagick/old-sources/6.x/6.4/ImageMagick-6.4.9-10.tar.gz"
   provides 'convert'
   after { sudo "ldconfig" }
 end
