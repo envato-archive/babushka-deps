@@ -1,4 +1,4 @@
-dep 'user set up from root' do
+dep 'user exists with password and ssh authorized key' do
   define_var :home_dir_base, :default => "/home"
   requires 'user exists with password', #DONE
            'authorized key present for user' #DONE
