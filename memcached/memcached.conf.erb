@@ -36,6 +36,9 @@ logfile /var/log/memcached.log
 # it's listening on a firewalled interface.
 -l <%= var(:memcached_listen_ip) %>
 
+# Set the maximum size of an item.
+-I <%= var(:memcached_item_size_max)
+
 # Limit the number of simultaneous incoming connections. The daemon default is 1024
 # -c 1024
 
