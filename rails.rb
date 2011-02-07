@@ -11,7 +11,8 @@ dep 'bundler installed' do #DONE
   }
   met? { in_dir(var(:rails_root)) { shell "bundle check", :log => true } }
   meet { in_dir(var(:rails_root)) {
-    shell "bundle install --without test,cucumber #{'--local' if var(:bundler_installed_locally).to_s =~ /^y/} #{'--path vendor/bundle' if var(:bundle_into_vendor).to_s =~ /^y/}", :log => true
+    bundle_command = "bundle install --without test,cucumber #{'--local' if var(:bundler_installed_locally).to_s =~ /^y/} #{'--path vendor/bundle' if var(:bundle_into_vendor).to_s =~ /^y/}"
+    shell "#{bundle_command} || #{bundle_command}", :log => true
   }}
 end
 
