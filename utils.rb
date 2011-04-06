@@ -3,7 +3,20 @@
 dep 'handy utils' do
   requires 'current_app symlink', #DONE
            'console shortcut', #DONE
+           'envato:cronic'
            'db shortcuts' #DONE
+end
+
+dep 'cronic' do
+  met? {
+    File.exist?('/usr/bin/cronic') &&
+    shell("/usr/bin/cronic ls").strip == '' } &&
+    shell("/usr/bin/cronic 'ls && false'" =~ /Cronic detected failure or error output for the command/)
+  }
+  meet {
+   sudo 'curl -o /usr/bin/cronic http://habilis.net/cronic/cronic'
+   sudo "chmod +x /usr/bin/cronic"
+  }
 end
 
 dep 'current_app symlink' do #DONE
