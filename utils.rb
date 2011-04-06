@@ -10,8 +10,8 @@ end
 dep 'cronic' do
   met? {
     File.exist?('/usr/bin/cronic') &&
-    log_shell("/usr/bin/cronic ls").strip == '' &&
-    shell("/usr/bin/cronic 'ls && false'" =~ /Cronic detected failure or error output for the command/)
+    shell("/usr/bin/cronic ls").strip == '' &&
+    shell("/usr/bin/cronic 'ls && false'") =~ /Cronic detected failure or error output for the command/
   }
   meet {
     puts "wtf "
