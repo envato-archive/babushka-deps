@@ -10,12 +10,13 @@ end
 dep 'cronic' do
   met? {
     File.exist?('/usr/bin/cronic') &&
-    shell("/usr/bin/cronic ls").strip == ''  &&
+    log_shell("/usr/bin/cronic ls").strip == '' &&
     shell("/usr/bin/cronic 'ls && false'" =~ /Cronic detected failure or error output for the command/)
   }
   meet {
-   sudo 'curl -o /usr/bin/cronic http://habilis.net/cronic/cronic'
-   sudo "chmod +x /usr/bin/cronic"
+    puts "wtf "
+    sudo 'curl -o /usr/bin/cronic http://habilis.net/cronic/cronic'
+    sudo "chmod +x /usr/bin/cronic"
   }
 end
 
