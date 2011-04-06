@@ -14,7 +14,6 @@ dep 'cronic' do
     shell("/usr/bin/cronic 'ls && false'") =~ /Cronic detected failure or error output for the command/
   }
   meet {
-    puts "wtf "
     sudo 'curl -o /usr/bin/cronic http://habilis.net/cronic/cronic'
     sudo "chmod +x /usr/bin/cronic"
   }
