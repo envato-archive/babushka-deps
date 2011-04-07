@@ -14,6 +14,7 @@ meta :crontab do
   template {
     helper(:existing_crontab) { shell "crontab -l" }
     met? {
+      require 'ruby-debug'
       debugger
       existing_crontab && lines_to_add.all? { |lines| lines.all? { |schedule, command|
         existing_crontab[command]
