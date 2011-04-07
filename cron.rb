@@ -18,10 +18,6 @@ meta :crontab do
   accepts_list_for :env_vars_to_add
   accepts_list_for :lines_to_add
 
-  def build_crontab
-    "#{env_vars_to_add.join("\n")}\n\n#{lines_to_add.map { |lines| lines.map { |schedule, command| "#{schedule}   #{command}" }.join("\n") }.join("\n")}\n"
-  end
-
   template {
     helper(:existing_crontab) { shell "crontab -l" }
 
@@ -35,7 +31,7 @@ meta :crontab do
       }
     }
     meet {
-      shell("crontab -", :input => build_crontab)
+      shell("crontab -", :input => "#{env_vars_to_add.join("\n")}\n\n#{lines_to_add.map { |lines| lines.map { |schedule, command| "#{schedule}   #{command}" }.join("\n") }.join("\n")}\n")
     }
   }
 end
