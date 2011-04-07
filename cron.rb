@@ -15,19 +15,18 @@
 # end
 
 meta :crontab do
-  accepts_list_for :env_vars_to_add
+  accepts_list_for :env_vars_to_add # babushka puts my list in a list, how helpful. hence my use of first later on. I'll fix this when we switch to tango
   accepts_list_for :lines_to_add
 
   template {
     helper(:existing_crontab) { shell "crontab -l" }
 
     met? {
-      raise "#{env_vars_to_add.inspect} #{env_vars_to_add.class.name}"
       existing_crontab &&
       lines_to_add.all? { |lines| lines.all? { |schedule, command|
         existing_crontab.include? command
       }} &&
-      env_vars_to_add.all? { |declaration|
+      env_vars_to_add.first.all? { |declaration|
         existing_crontab.include? declaration
       }
     }
