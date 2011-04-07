@@ -12,6 +12,7 @@
 meta :crontab do
   accepts_list_for :lines_to_add
   template {
+    raise self.inspect
     helper(:existing_crontab) { shell "crontab -l" }
     met? {
       existing_crontab && lines_to_add.all? { |lines| lines.all? { |schedule, command|
