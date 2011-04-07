@@ -22,6 +22,7 @@ meta :crontab do
     helper(:existing_crontab) { shell "crontab -l" }
 
     met? {
+      raise "#{existing_crontab.inspect} #{existing_crontab.class.name}"
       existing_crontab &&
       lines_to_add.all? { |lines| lines.all? { |schedule, command|
         existing_crontab.include? command
