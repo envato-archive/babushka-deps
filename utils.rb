@@ -12,13 +12,13 @@ class CronicInstaller < Tango::Runner
 
     met? {
       File.exist?('/usr/bin/cronic') &&
-      shell("/usr/bin/cronic ls").strip == '' &&
-      shell("/usr/bin/cronic 'ls && false'") =~ /Cronic detected failure or error output for the command/
+      shell('/usr/bin/cronic', 'l').output.strip == '' &&
+      shell('/usr/bin/cronic', 'ls && false').output =~ /Cronic detected failure or error output for the command/
     }
 
     meet do
-      shell 'curl -o /usr/bin/cronic http://habilis.net/cronic/cronic'
-      shell "chmod +x /usr/bin/cronic"
+      shell('curl', '-o', '/usr/bin/cronic', 'http://habilis.net/cronic/cronic')
+      shell('chmod', '+x', '/usr/bin/cronic')
     end
   end
 end
