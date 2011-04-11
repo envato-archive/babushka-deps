@@ -8,7 +8,7 @@ dep 'handy utils' do
 end
 
 class CronicInstaller < Tango::Runner
-  step "install" do |package|
+  step "install" do
 
     met? {
       File.exist?('/usr/bin/cronic') &&
@@ -51,18 +51,5 @@ cd current_app && script/dbconsole -p #{var(:rails_env)}
   meet {
     shell "cat > #{shortcut_file}", :input => shortcut_contents
     shell "chmod +x #{shortcut_file}"
-  }
-end
-
-dep 'slow dep' do
-  setup {
-    @lolrunonceonly = false
-  }
-  met? {
-    @lolrunonceonly || shell("for i in 1 2 3 4 5; do echo $i; sleep 1; done", :log => true)
-    @lolrunonceonly || log_shell("running dis.", "for i in 1 2 3 4 5; do echo $i; sleep 1; done")
-  }
-  meet {
-    @lolrunonceonly = true
   }
 end
