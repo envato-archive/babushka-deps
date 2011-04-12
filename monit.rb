@@ -1,19 +1,6 @@
 # Installs and configures monit. Like a boss.
 require 'apt_installer'
 
-# dep 'monit running' do #DONE
-#   requires 'monit'
-#   requires_when_unmet 'monit startable'
-#   met? { (status = sudo("monit status")) && status[/uptime/] }
-#   meet { sudo "/etc/init.d/monit start" }
-# end
-#
-# dep 'monit startable' do
-#   requires 'monitrc configured', 'monit config is where we expect'
-#   met? { sudo "grep 'startup=1' /etc/default/monit" }
-#   meet { sudo "sed -i s/startup=0/startup=1/ /etc/default/monit" }
-# end
-
 class MonitInstaller < Tango::Runner
   def initialize
     @apt = AptInstaller.new
@@ -44,5 +31,24 @@ class MonitInstaller < Tango::Runner
       include <%= @monit_included_dir %>
     ERB
     shell "chmod", "700", "/etc/monit/monitrc"
+  end
+
+  step 'monit_running' do
+    met? { shell("monit", "status").output.include?('uptime') }
+    meet do
+      install
+      monit_startable
+      shell("/etc/init.d/monit", "start")
+    end
+  end
+#
+  step 'monit_startable' do
+
+   met? { shell("grep", "startup=1", "/etc/default/monit").succeeded? }
+   meet do
+     configure_monitrc
+     configure
+     shell("sed", "-i", "s/startup=0/startup=1/", "/etc/default/monit")
+   end
   end
 end
