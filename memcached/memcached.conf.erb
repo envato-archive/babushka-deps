@@ -42,6 +42,9 @@ logfile /var/log/memcached.log
 # Number of threads, 1 per core is recommended: https://github.com/memcached/memcached/blob/master/doc/threads.txt
 -t <%= var(:memcached_threads) %>
 
+# Use large memory pages
+-L
+
 # Limit the number of simultaneous incoming connections. The daemon default is 1024
 # -c 1024
 
