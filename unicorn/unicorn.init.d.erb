@@ -28,6 +28,12 @@ oldsig () {
 	test -s $old_pid && kill -$1 `cat $old_pid`
 }
 
+workersig () {
+  workerpid="/var/run/marketplace/unicorn_$2.pid"
+
+  test -s "$workerpid" && kill -$1 `cat $workerpid`
+}
+
 case $action in
 start)
 	sig 0 && echo >&2 "Already running" && exit 0
@@ -47,6 +53,10 @@ restart)
   echo >&2 "!!!! Something went wrong, trying to start anyway"
   $CMD
 	;;
+kill_worker)
+  workersig QUIT $2 && exit 0
+  echo >&2 "Worker not running"
+  ;;
 reopen-logs)
 	sig USR1
 	;;

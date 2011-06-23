@@ -3,5 +3,8 @@
 <% (0...var(:num_unicorn_workers).to_i).each do |worker_num| %>
 check process unicorn_<%= var(:app_name) %>_<%= worker_num %>
   with pidfile <%= var :app_pid_dir %>/unicorn_<%= worker_num %>.pid
+  start program = "/bin/cat /dev/null"
+  stop program = "/etc/init.d/unicorn kill_worker <%= worker_num %>"
+  if mem is greater than <%= 80 / var(:num_unicorn_workers).to_i %>% for 1 cycles then restart
   group unicorn_<%= var(:app_name) %>
 <% end %>
