@@ -5,4 +5,3 @@ check process unicorn_<%= var(:app_name) %>_master
   start program = "/etc/init.d/unicorn start"
   stop program = "/etc/init.d/unicorn stop"
   group unicorn_<%= var(:app_name) %>_master
-<% end %>
