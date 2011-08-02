@@ -21,11 +21,11 @@ old_pid="$PID.oldbin"
 cd $APP_ROOT || exit 1
 
 sig () {
-	test -s "$PID" && kill -$1 `cat $PID`
+  test -s "$PID" && kill -$1 `cat $PID`
 }
 
 oldsig () {
-	test -s $old_pid && kill -$1 `cat $old_pid`
+  test -s $old_pid && kill -$1 `cat $old_pid`
 }
 
 workersig () {
@@ -36,32 +36,32 @@ workersig () {
 
 case $action in
 start)
-	sig 0 && echo >&2 "Already running" && exit 0
-	export $ENV_OPTS
-	$CMD
-	;;
+  sig 0 && echo >&2 "Already running" && exit 0
+  export $ENV_OPTS
+  $CMD
+  ;;
 stop)
-	sig QUIT && exit 0
-	echo >&2 "Not running"
-	;;
+  sig QUIT && exit 0
+  echo >&2 "Not running"
+  ;;
 force-stop)
-	sig TERM && exit 0
-	echo >&2 "Not running"
-	;;
+  sig TERM && exit 0
+  echo >&2 "Not running"
+  ;;
 restart)
   mv $PID $old_pid && echo old pid moved && export $ENV_OPTS && $CMD && echo started ok && exit 0
   echo >&2 "!!!! Something went wrong, trying to start anyway"
   $CMD
-	;;
+  ;;
 kill_worker)
   workersig QUIT $2 && exit 0
   echo >&2 "Worker not running"
   ;;
 reopen-logs)
-	sig USR1
-	;;
+  sig USR1
+  ;;
 *)
-	echo >&2 "Usage: $0 <start|stop|restart|upgrade|force-stop|reopen-logs>"
-	exit 1
-	;;
+  echo >&2 "Usage: $0 <start|stop|restart|upgrade|force-stop|reopen-logs>"
+  exit 1
+  ;;
 esac
