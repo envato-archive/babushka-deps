@@ -2,10 +2,9 @@
 
 <% (1..var(:num_dj_workers).to_i).each do |worker_index| %>
 check process dj_<%= var(:app_name) %>_<%= worker_index %>
-  <% pidfile = "#{var(:app_pid_dir)}/dj.#{worker_index}.pid" %>
-  with pidfile <%= pidfile %>
-  start program = "/bin/su <%= var(:username) %> -c '/usr/bin/env RAILS_ENV=<%= var(:rails_env) %> <%= File.expand_path(var(:rails_root)) %>/script/production_delayed_job <%= pidfile %> start'"
-  stop program = "/bin/su <%= var(:username) %> -c '/usr/bin/env RAILS_ENV=<%= var(:rails_env) %> <%= File.expand_path(var(:rails_root)) %>/script/production_delayed_job <%= pidfile %> stop'"
+  with pidfile <% "#{var(:app_pid_dir)}/delayed_job.#{worker_index}.pid" %>
+  start program = "/bin/su <%= var(:username) %> -c '/usr/bin/env RAILS_ENV=<%= var(:rails_env) %> <%= File.expand_path(var(:rails_root)) %>/script/delayed_job -i <%= worker_index %> --pid-dir=<%= var(:app_pid_dir) %> start'"
+  stop program = "/bin/su <%= var(:username) %> -c '/usr/bin/env RAILS_ENV=<%= var(:rails_env) %> <%= File.expand_path(var(:rails_root)) %>/script/delayed_job -i <%= worker_index %> --pid-dir=<%= var(:app_pid_dir) %> stop'"
   if totalmem is greater than 300 MB for 4 cycles then restart # eating up memory?
   group dj_<%= var(:app_name) %>
 <% end %>
